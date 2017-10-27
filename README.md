@@ -1,6 +1,6 @@
 # HETE References
 
-1. (2014). BARACA: Using Bayesian Additive Regression Trees for Generating Persuadability Models In-Cycle. Analyst Institute.
+1. Ternovski, J. (2014). BARACA: Using Bayesian Additive Regression Trees for Generating Persuadability Models In-Cycle. Analyst Institute Memo.
 
 2. Taddy, M., et al. (2015). A nonparametric Bayesian analysis of heterogeneous treatment effects in digital experimentation. arXiv: 1412.8563
 
