@@ -1,4 +1,10 @@
-# HETE References
+# Heterogeneous Treatment Effects
+
+### Talks
+
+1. [The Power of Persuasion Modeling](https://speakerdeck.com/wlattner/the-power-of-persuasion-modeling), Strata + Hadoop World, 2017.
+
+### References
 
 1. Ternovski, J. (2014). BARACA: Using Bayesian Additive Regression Trees for Generating Persuadability Models In-Cycle. Analyst Institute Memo.
 
