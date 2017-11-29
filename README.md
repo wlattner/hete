@@ -1,5 +1,11 @@
 # HETE - A toolbox for modeling heterogeneous treatment effects
 
+## Install
+
+```r
+devtools::install_github("wlattner/hete")
+```
+
 ## Usage
 ```r
 library(tidyverse)
