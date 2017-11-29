@@ -1,3 +1,25 @@
+#' Uplift Curve
+#'
+#' The uplift curve is analgous to the ROC curve used to evaluate the
+#' performance of binary classification models. We order the observations
+#' by the predicted treatment effect and then compare the cumulative lift
+#' against the observed treatment effect. The observed treatment effect is
+#' the lift we would achieve using random targeting or selection.
+#'
+#' @param y a vector of outcomes.
+#' @param tmt a vector indicating which units received treatment.
+#' @param pred_te a vector of predicted treatment effects.
+#' @param bins the number of bins to use for building the uplift curve. More
+#'   bins will result in a smoother curve, but this is limited by the number of
+#'   distinct values \code{pred_te} as well as the number of treatment and
+#'   control units falling in each bin.
+#'
+#' @return a \code{hete_uplift} object with:
+#'  \item{uplift_curve}{A \code{data.frame} with the points of the uplift curve.}
+#'  \item{q}{The q/qini score of the model.}
+#'  \item{ate_observed}{The observed average treatment effect.}
+#'  \item{ate_predicted}{The mean predicted treatment effect.}
+#'
 #' @export
 uplift <- function(y, tmt, pred_te, bins = 10) {
 
