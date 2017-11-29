@@ -55,6 +55,6 @@ plot(uc)
 
 }
 }
-\seealso{
-\url{https://arxiv.org/abs/1706.03461}
+\references{
+Künzel, S., Sekhon, J., Bickel, P., & Yu, B. (2017). Meta-learners for Estimating Heterogeneous Treatment Effects using Machine Learning. arXiv preprint arXiv:1706.03461.
 }
