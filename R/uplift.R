@@ -95,9 +95,8 @@ plot_quantiles <- function(y, tmt, pred_te, bins = 10) {
                       tmt_quantile = factor(dplyr::ntile(.data$pred_te, bins)),
                       ctl = ifelse(.data$tmt == 0, 1, 0))
 
-  # TODO: group_by_ is deprecated, figure out the NSE magic to make group_by
-  # take a string as the column name.
-  qt <- dplyr::group_by_(df, "tmt_quantile")
+  # Thanks to https://edwinth.github.io/blog/dplyr-recipes/.
+  qt <- dplyr::group_by(df, !!rlang::sym("tmt_quantile"))
   qt <- dplyr::mutate(qt,
                       y_0 = ifelse(.data$tmt == 0, .data$y, 0),
                       y_1 = ifelse(.data$tmt == 1, .data$y, 0))
