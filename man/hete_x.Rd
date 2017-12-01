@@ -8,9 +8,11 @@
 \usage{
 hete_x(x, ...)
 
-\method{hete_x}{default}(x, y, tmt, est, ...)
+\method{hete_x}{default}(x, y, tmt, est, tmt_est = est, ctl_est = est,
+  te_tmt_est = est, te_ctl_est = est, ...)
 
-\method{hete_x}{formula}(x, data, est, ...)
+\method{hete_x}{formula}(x, data, est, tmt_est = est, ctl_est = est,
+  te_tmt_est = est, te_ctl_est = est, ...)
 }
 \arguments{
 \item{x}{a \code{data.frame} or matrix with predictor variables measured prior to
@@ -23,11 +25,18 @@ formula: \code{outcome ~ x1 + x2 | treatment}}
 
 \item{tmt}{a vector indicating which units received treatment.}
 
-\item{est}{an estimator to use for modeling the treatment effect. This must
-be a function which takes two arguments, \code{x} and \code{y} and returns
-an object which has an implementation of \code{\link[stats]{predict}}. The
-\code{predict} implementation must return a single vector with the
-estimated outcome or probability of success in the case of binary outcomes.}
+\item{est, tmt_est, ctl_est, te_tmt_est, te_ctl_est}{an estimator to use for
+modeling the treatment effect. This must be a function which takes two
+arguments, \code{x} and \code{y} and returns an object which has an
+implementation of \code{\link[stats]{predict}}. The \code{predict}
+implementation must return a single vector with the estimated outcome or
+probability of success in the case of binary outcomes. By default the same
+estimator, \code{est} is used for all four models in the meta-estimator.
+You may optionally select a different estimator for one or more of these
+models. \code{tmt_est} and \code{ctl_est} are used to estimate the response
+in the treatment and control groups respectively. \code{te_tmt_est} and
+\code{te_ctl_est} are used to estimate the treatment effect in the
+treatment and control groups.}
 
 \item{data}{a \code{data.frame} containing the variables specified in
 \code{x} when using a formula to specify the model.}
