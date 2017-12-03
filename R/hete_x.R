@@ -2,6 +2,19 @@
 #'
 #' @inheritParams hete_single
 #'
+#' @param est,tmt_est,ctl_est,te_tmt_est,te_ctl_est an estimator to use for
+#'   modeling the treatment effect. This must be a function which takes two
+#'   arguments, \code{x} and \code{y} and returns an object which has an
+#'   implementation of \code{\link[stats]{predict}}. The \code{predict}
+#'   implementation must return a single vector with the estimated outcome or
+#'   probability of success in the case of binary outcomes. By default the same
+#'   estimator, \code{est} is used for all four models in the meta-estimator.
+#'   You may optionally select a different estimator for one or more of these
+#'   models. \code{tmt_est} and \code{ctl_est} are used to estimate the response
+#'   in the treatment and control groups respectively. \code{te_tmt_est} and
+#'   \code{te_ctl_est} are used to estimate the treatment effect in the
+#'   treatment and control groups.
+#'
 #' @return A \code{hete_x} object.
 #'
 #' @export
@@ -27,33 +40,36 @@ hete_x <- function(x, ...) {
 
 #' @export
 #' @rdname hete_x
-hete_x.default <- function(x, y, tmt, est, ...) {
-  hete_x_impl(x, y, tmt, est)
+hete_x.default <- function(x, y, tmt, est, tmt_est = est, ctl_est = est,
+                           te_tmt_est = est, te_ctl_est = est, ...) {
+  hete_x_impl(x, y, tmt, tmt_est, ctl_est, te_tmt_est, te_ctl_est)
 }
 
 #' @export
 #' @rdname hete_x
-hete_x.formula <- function(x, data, est, ...) {
+hete_x.formula <- function(x, data, est, tmt_est = est, ctl_est = est,
+                           te_tmt_est = est, te_ctl_est = est, ...) {
   dat <- parse_hete_formula(x, data = data)
-  hete_x_impl(dat$x, dat$y, dat$tmt, est, model_terms = dat$model_terms)
+  hete_x_impl(dat$x, dat$y, dat$tmt, tmt_est, ctl_est, te_tmt_est, te_ctl_est,
+              model_terms = dat$model_terms)
 }
 
-hete_x_impl <- function(x, y, tmt, est, model_terms = NULL) {
-  # TODO: Users may want to provide two different estimators for this
-  # meta learner.
+hete_x_impl <- function(x, y, tmt, tmt_est, ctl_est, te_tmt_est, te_ctl_est,
+                        model_terms = NULL) {
+
   x_0 <- select_control(x, tmt)
   y_0 <- select_control(y, tmt)
-  u_c <- est(x_0, y_0)
+  u_c <- ctl_est(x_0, y_0)
 
   x_1 <- select_treatment(x, tmt)
   y_1 <- select_treatment(y, tmt)
-  u_t <- est(x_1, y_1)
+  u_t <- tmt_est(x_1, y_1)
 
   d_0 <- stats::predict(u_t, x_0) - y_0
   d_1 <- y_1 - stats::predict(u_c, x_1)
 
-  t_0 <- est(d_0, x_0)
-  t_1 <- est(d_1, x_1)
+  t_0 <- te_ctl_est(d_0, x_0)
+  t_1 <- te_tmt_est(d_1, x_1)
 
   hete_model(x, y, tmt, t_0 = t_0, t_1 = t_1, g = mean(tmt),
              model_terms = model_terms, subclass = "hete_x")
