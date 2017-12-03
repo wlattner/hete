@@ -56,8 +56,7 @@ hete_x.formula <- function(x, data, est, tmt_est = est, ctl_est = est,
 
 hete_x_impl <- function(x, y, tmt, tmt_est, ctl_est, te_tmt_est, te_ctl_est,
                         model_terms = NULL) {
-  # TODO: Users may want to provide two different estimators for this
-  # meta learner.
+
   x_0 <- select_control(x, tmt)
   y_0 <- select_control(y, tmt)
   u_c <- ctl_est(x_0, y_0)
