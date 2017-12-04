@@ -1,0 +1,101 @@
+---
+title: "Get Out the Vote"
+output: 
+  rmarkdown::html_vignette:
+    fig_width: 6
+    fig_height: 4
+vignette: >
+  %\VignetteIndexEntry{GOTV}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Imagine that you are tasked with optimally allocating the marketing spend of a
+non-profit with the goal of increasing voter turnout in American elections. This
+particular group has decided they wish to send flyers to registered voters, but
+have a fixed budget and can't afford to send mail to everyone. How do we decide
+who should receive mail so that our budget is optimally spent?
+
+Solving this problem requires us to answer a causal question: who turns out
+to vote *because* they recieved our mailer? In marketing, politics, medicine,
+these sorts of questions are answered by analyzing the results of a randomized
+controlled experiment. We randomally assign a portion of the population of
+interest—registered voters—to one or more treatments and a control. Continuing
+with our GOTV example, we would randomly select a group of people to receive
+mailers and another group to receive nothing. After sending the mailers, we can
+then observe the turnout [^1] of both the control and treatment groups. 
+
+[^1]: In the United States, who voted in an election is a matter of public record.
+
+Fortunately for us, some researchers already ran such an experiment and
+published the individual-level data. In 2006, ...
+
+
+```{r, message = FALSE}
+library(tidyverse)
+library(hete)
+
+data(gotv)
+head(gotv)
+```
+
+```{r}
+turnout <- gotv %>%
+  mutate(voted = ifelse(voted == "Yes", 1, 0)) %>%
+  group_by(treatment) %>%
+  summarize(turnout = mean(voted))
+
+turnout
+```
+
+```{r}
+m <- lm(ifelse(voted == "Yes", 1, 0) ~ treatment, data = gotv)
+summary(m)
+```
+
+```{r,fig.retina = 2, fig.align = "center"}
+library(broom)
+
+coefs <- tidy(m) %>%
+  filter(term != "(Intercept)") %>%
+  mutate(term = str_replace(term, "treatment", ""))
+
+ggplot(coefs, aes(term, estimate)) +
+  geom_point() +
+  geom_pointrange(aes(ymax = estimate + std.error, ymin = estimate - std.error)) +
+  xlab("Treatment") +
+  ylab("Treatment Effect") +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_bw()
+```
+
+```{r data_transform, cache = TRUE}
+df <- gotv %>%
+  filter(treatment %in% c("Control", "Neighbors")) %>%
+  mutate(treatment = ifelse(treatment == "Neighbors", 1, 0))
+```
+
+```{r single_model, cache = TRUE}
+m1 <- hete_single(voted ~ . | treatment, data = df, est = random_forest)
+```
+
+```{r, fig.retina = 2, fig.align = "center"}
+plot(m1)
+```
+
+```{r split_model, cache = TRUE}
+m2 <- hete_split(voted ~ . | treatment, data = df, est = random_forest)
+```
+
+```{r, fig.retina = 2, fig.align = "center"}
+plot(m2)
+```
+
+### TODO:
+  1. rf, lasso, xgboost
+  1. explain uplift
+  1. hete_single, hete_split, hete_tot, hete_x
+  1. plot single models
+  1. plot all models
+  1. out-of-sample scores
