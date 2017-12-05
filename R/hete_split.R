@@ -49,6 +49,9 @@ hete_split.formula <- function(x, data, est, tmt_est = est, ctl_est = est, ...) 
 }
 
 hete_split_impl <- function(x, y, tmt, tmt_est, ctl_est, model_terms = NULL) {
+  y <- check_y(y)
+  tmt <- check_tmt(tmt)
+
   m_1 <- tmt_est(x[tmt == 1, ], y[tmt == 1])
   m_0 <- ctl_est(x[tmt == 0, ], y[tmt == 0])
 

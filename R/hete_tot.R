@@ -38,6 +38,9 @@ hete_tot.formula <- function(x, data, est, ...) {
 }
 
 hete_tot_impl <- function(x, y, tmt, est, model_terms) {
+  y <- check_y(y)
+  tmt <- check_tmt(tmt)
+
   e <- mean(tmt)
   z <- y * (tmt - e) / (e * (1 - e))
 

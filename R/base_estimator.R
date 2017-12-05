@@ -6,11 +6,16 @@
 #' for prediction.
 #'
 #' @param fit_fn a function taking only two parameters, the predictor variables
-#'   \code{x} and a vector of outcomes \code{y}. This function should return an
-#'   object which has an implementation of \code{\link[stats]{predict}}.
+#'   \code{x} and a vector of outcomes \code{y}. When \code{y} is a
+#'   \code{factor}, then \code{fit_fn} should fit a binary classification model.
+#'   Otherwise, \code{fit_fn} should fit a regression model. This function
+#'   should return an object which has an implementation of
+#'   \code{\link[stats]{predict}}.
 #' @param predict_fn a function taking two parameters, the model \code{object}
-#'   and the predictor variables \code{newdata}. \code{stats::predict} is
-#'   used by default.
+#'   and the predictor variables \code{newdata}. The return value should be a
+#'   numeric vector, the probability of the positive class in the case of a
+#'   binary outcome, or the numeric response for a continuous outcome.
+#'   \code{stats::predict} is used by default.
 #'
 #' @examples \dontrun{
 #'   library(randomForest)
@@ -19,8 +24,12 @@
 #'     randomForest(x, y, ntree = 200)
 #'   }
 #'
-#'   rf_predict <- function(object, newdata) {
-#'     stats::predict(object, newdata, type = "prob")[, 2]
+#'   rf_predict <- function(m, newdata) {
+#'     if (m$type == "classification") {
+#'       return(stats::predict(m, newdata, type = "prob")[, 2])
+#'     }
+#'
+#'     stats::predict(m, newdata, type = "response")
 #'   }
 #'
 #'   rf <- base_estimator(rf_fit, rf_predict)
@@ -43,12 +52,14 @@ predict.base_estimator <- function(object, newdata, ...) {
 }
 
 rf_predict <- function(m, newdata) {
-  stats::predict(m, newdata, type = "prob")[, 2]
+  if (m$type == "classification") {
+    return(stats::predict(m, newdata, type = "prob")[, 2])
+  }
+
+  stats::predict(m, newdata, type = "response")
 }
 
 rf_fit <- function(x, y) {
-  # y must be a factor to make rf fit a classification model
-  y <- factor(y)
   randomForest::randomForest(x, y, ntree = 200)
 }
 
