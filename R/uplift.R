@@ -39,6 +39,7 @@ uplift <- function(y, tmt, pred_te, bins = 10) {
   # we want to order the scores from highest to lowest
   qts <- stats::quantile(pred_te, probs = rev(frac))
   model_lift <- purrr::map_dbl(qts, model_lift, y = y, tmt = tmt, pred_te = pred_te)
+  model_lift <- model_lift * frac
   # the first one must be 0
   model_lift[1] <- 0
 
