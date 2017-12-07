@@ -50,6 +50,9 @@ hete_single.formula <- function(x, data, est, ...) {
 }
 
 hete_single_impl <- function(x, y, tmt, est, model_terms = NULL) {
+  y <- check_y(y)
+  tmt <- check_tmt(tmt)
+
   m <- est(cbind(x, tmt), y)
 
   hete_model(x, y, tmt, model = m, model_terms = model_terms,

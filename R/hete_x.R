@@ -56,6 +56,8 @@ hete_x.formula <- function(x, data, est, tmt_est = est, ctl_est = est,
 
 hete_x_impl <- function(x, y, tmt, tmt_est, ctl_est, te_tmt_est, te_ctl_est,
                         model_terms = NULL) {
+  y <- check_y(y)
+  tmt <- check_tmt(tmt)
 
   x_0 <- select_control(x, tmt)
   y_0 <- select_control(y, tmt)
@@ -65,11 +67,11 @@ hete_x_impl <- function(x, y, tmt, tmt_est, ctl_est, te_tmt_est, te_ctl_est,
   y_1 <- select_treatment(y, tmt)
   u_t <- tmt_est(x_1, y_1)
 
-  d_0 <- stats::predict(u_t, x_0) - y_0
-  d_1 <- y_1 - stats::predict(u_c, x_1)
+  d_0 <- stats::predict(u_t, x_0) - as_numeric(y_0)
+  d_1 <- as_numeric(y_1) - stats::predict(u_c, x_1)
 
-  t_0 <- te_ctl_est(d_0, x_0)
-  t_1 <- te_tmt_est(d_1, x_1)
+  t_0 <- te_ctl_est(x_0, d_0)
+  t_1 <- te_tmt_est(x_1, d_1)
 
   hete_model(x, y, tmt, t_0 = t_0, t_1 = t_1, g = mean(tmt),
              model_terms = model_terms, subclass = "hete_x")
