@@ -68,3 +68,11 @@ as_numeric <- function(x) {
   x <- ifelse(x == ref_level, 0, 1)
   return(x)
 }
+
+extract_model_terms <- function(m, x) {
+  if (!is.null(m$model_terms) && is.data.frame(x)) {
+    x <- stats::model.matrix(m$model_terms, x)
+  }
+
+  x
+}

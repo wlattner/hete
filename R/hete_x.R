@@ -79,9 +79,7 @@ hete_x_impl <- function(x, y, tmt, tmt_est, ctl_est, te_tmt_est, te_ctl_est,
 
 #' @export
 predict.hete_x <- function(object, newdata, ...) {
-  if (!is.null(object$model_terms)) {
-    newdata <- stats::model.matrix(object$model_terms, newdata)
-  }
+  newdata <- extract_model_terms(object, newdata)
 
   t_hat_0 <- stats::predict(object$t_0, newdata)
   t_hat_1 <- stats::predict(object$t_1, newdata)

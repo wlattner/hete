@@ -52,9 +52,7 @@ hete_tot_impl <- function(x, y, tmt, est, model_terms) {
 
 #' @export
 predict.hete_tot <- function(object, newdata, ...) {
-  if (!is.null(object$model_terms)) {
-    newdata <- stats::model.matrix(object$model_terms, newdata)
-  }
+  newdata <- extract_model_terms(object, newdata)
 
   stats::predict(object$model, newdata)
 }

@@ -61,9 +61,7 @@ hete_split_impl <- function(x, y, tmt, tmt_est, ctl_est, model_terms = NULL) {
 
 #' @export
 predict.hete_split <- function(object, newdata, ...) {
-  if (!is.null(object$model_terms)) {
-    newdata <- stats::model.matrix(object$model_terms, newdata)
-  }
+  newdata <- extract_model_terms(object, newdata)
 
   y_1 <- stats::predict(object$treatment_model, newdata)
   y_0 <- stats::predict(object$control_model, newdata)

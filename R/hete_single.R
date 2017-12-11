@@ -65,11 +65,7 @@ hete_single_impl <- function(x, y, tmt, est, model_terms = NULL) {
 #' @export
 #' @rdname hete_single
 predict.hete_single <- function(object, newdata, ...) {
-  if (!is.null(object$model_terms)) {
-    # The model was fitted using a formula. Build the design matrix for
-    # prediction.
-    newdata <- stats::model.matrix(object$model_terms, newdata)
-  }
+  newdata <- extract_model_terms(object, newdata)
 
   y_1 <- stats::predict(object$model, cbind(newdata, tmt = 1))
   y_0 <- stats::predict(object$model, cbind(newdata, tmt = 0))
