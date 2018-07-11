@@ -44,7 +44,7 @@ check_tmt <- function(tmt) {
 check_y <- function(y) {
   if (is.numeric(y)) {
     if (setequal(y, c(0, 1))) {
-      message("y only has 1/0 to model a binary outcome, y must be a factor")
+      stop("y only has 1/0, to model a binary outcome, y must be a factor")
     }
 
     # don't need to do anything in this case
