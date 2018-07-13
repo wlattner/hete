@@ -1,5 +1,7 @@
 # HETE - A toolbox for modeling heterogeneous treatment effects
 
+[![Travis-CI Build Status](https://travis-ci.org/wlattner/hete.svg?branch=master)](https://travis-ci.org/wlattner/hete)
+
 ## Install
 
 ```r
