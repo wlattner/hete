@@ -61,7 +61,7 @@ print.hete_model <- function(x, ...) {
 plot.hete_model <- function(x, y, what = c("uplift", "quantile"), ...) {
   what <- match.arg(what)
   switch(what,
-    uplift = plot(uplift(x$train_data$y, x$train_data$tmt, x$pred_te)),
+    uplift = graphics::plot(uplift(x$train_data$y, x$train_data$tmt, x$pred_te)),
     quantile = plot_quantiles(x$train_data$y, x$train_data$tmt, x$pred_te)
   )
 }

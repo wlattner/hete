@@ -63,5 +63,10 @@ rf_fit <- function(x, y) {
   randomForest::randomForest(x, y, ntree = 200)
 }
 
+#' Wrapper for ranger
+#'
+#' @param x a \code{data.frame} or matrix with predictor variables.
+#' @param y a vector of outcomes or labels.
+#'
 #' @export
 random_forest <- base_estimator(fit_fn = rf_fit, predict_fn = rf_predict)

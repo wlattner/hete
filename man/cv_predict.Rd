@@ -6,7 +6,7 @@
 \alias{cv_predict.formula}
 \title{Out of Sample Predictions Using Cross Valiation}
 \usage{
-cv_predict(x, model, folds, ...)
+cv_predict(x, ...)
 
 \method{cv_predict}{default}(x, y, tmt, model, folds = 3, ...)
 
@@ -17,16 +17,16 @@ cv_predict(x, model, folds, ...)
 treatment or unaffected by treatment. Alternatively, this can be a model
 formula: \code{outcome ~ x1 + x2 | treatment}}
 
-\item{model}{a \code{hete_model} to use for making predictions.
-are passed to the \code{model} fitting function.}
-
-\item{folds}{the number of folds to use for cros validation.}
-
 \item{\dots}{extra parameters passed to \code{model}.}
 
 \item{y}{a vector of outcomes.}
 
 \item{tmt}{a vector indicating which units received treatment.}
+
+\item{model}{a \code{hete_model} to use for making predictions.
+are passed to the \code{model} fitting function.}
+
+\item{folds}{the number of folds to use for cros validation.}
 
 \item{data}{a \code{data.frame} containing the variables specified in
 \code{x} when using a formula to specify the model.}
