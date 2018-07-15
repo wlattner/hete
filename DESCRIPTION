@@ -1,14 +1,13 @@
 Package: hete
 Title: Heterogeneous Treatment Effect Modeling
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: person("Bill", "Lattner", email = "wlattner@gmail.com", role = c("aut", "cre"))
 Description: Model heterogeneous treatment effects in randomized controlled trials.
-Depends: R (>= 3.4.2)
+Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: testthat,
-    mockery,
     knitr
 RoxygenNote: 6.0.1
 Imports: tibble,

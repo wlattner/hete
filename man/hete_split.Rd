@@ -57,7 +57,7 @@ df <- gotv \%>\%
 m <- hete_split(voted ~ . | treatment, data = df, est = random_forest)
 p <- predict(m, df)
 
-uc <- uplift(df$treatment, df$voted, p)
+uc <- uplift(df$voted, df$treatment, p)
 plot(uc)
 
 }

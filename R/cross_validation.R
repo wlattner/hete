@@ -7,7 +7,7 @@
 #' @param \dots extra parameters passed to \code{model}.
 #'
 #' @export
-cv_predict <- function(x, model, folds, ...) {
+cv_predict <- function(x, ...) {
   UseMethod("cv_predict")
 }
 
@@ -44,7 +44,7 @@ fit_predict <- function(test_ind, x, y, tmt, model) {
   tmt_tr <- tmt[train_mask]
 
   m <- model(x_tr, y_tr, tmt_tr)
-  p <- predict(m, x[!train_mask, ], y[!train_mask], tmt[!train_mask])
+  p <- stats::predict(m, x[!train_mask, ], y[!train_mask], tmt[!train_mask])
 
   data.frame(ind = test_ind, predicted_te = p)
 }

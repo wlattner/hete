@@ -1,4 +1,4 @@
-# HETE - A toolbox for modeling heterogeneous treatment effects
+# HETE - A toolbox for heterogeneous treatment effects
 
 [![Travis-CI Build Status](https://travis-ci.org/wlattner/hete.svg?branch=master)](https://travis-ci.org/wlattner/hete)
 
