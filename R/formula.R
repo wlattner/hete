@@ -7,7 +7,7 @@ parse_hete_formula <- function(f, data) {
   }
   # The rhs of the formula is parsed as a call to the function `|`, the first
   # arg is the model formula, the second is the treatment indicator.
-  rhs_args <- rlang::lang_args(rhs)
+  rhs_args <- rlang::call_args(rhs)
   # We're adding the response (`lhs`) back in so it's not accidentally included
   # below when we build the terms object. If the caller used `.`, the call to
   # terms will pull the response back into the model since it's in `data`.
