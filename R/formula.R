@@ -2,7 +2,7 @@ parse_hete_formula <- function(f, data) {
   lhs <- rlang::f_lhs(f)
   rhs <- rlang::f_rhs(f)
   # verify we have correct form
-  if (rlang::lang_name(rhs) != "|") {
+  if (rlang::call_name(rhs) != "|") {
     stop("formula must be in the form: y ~ x1 + x2 + ... + xn | tmt")
   }
   # The rhs of the formula is parsed as a call to the function `|`, the first
